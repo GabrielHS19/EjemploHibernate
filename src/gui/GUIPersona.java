@@ -8,6 +8,7 @@ package gui;
 import ejemplohibernate.HibernateUtil;
 import ejemplohibernate.Persona;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -85,6 +86,12 @@ public class GUIPersona extends javax.swing.JFrame {
 
         jLabel4.setText("Telefono:");
 
+        txtClave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -138,9 +145,27 @@ public class GUIPersona extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btoAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btoAgregarActionPerformed
+        Session session= HibernateUtil.getSessionFactory().openSession();
+        System.out.println("Se conecto");
+        Transaction transaction=session.beginTransaction();
+        System.out.println("Inicio Transaccion");
         Persona p=new Persona();
+        p.setClave(txtClave.getText());
+        p.setNombre(txtNombre.getText());
+        p.setDireccion(txtDireccion.getText());
+        p.setTelefono(txtTelefono.getText());
+        
+        session.save(p);
+        
+        transaction.commit();
+        System.out.println("Fin de Transaccion");
+        session.close();
        
     }//GEN-LAST:event_btoAgregarActionPerformed
+
+    private void txtClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtClaveActionPerformed
 
     /**
      * @param args the command line arguments
